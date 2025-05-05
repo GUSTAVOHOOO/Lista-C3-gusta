@@ -337,6 +337,89 @@ Fila* ex3(Fila* fi){
 
 }
 
+//EX 4
+int Furafila(Fila* fi, int n){
+    if(fi == NULL){
+        return 0;
+    }
+
+    Elem *no = (Elem*)malloc(sizeof(Elem));
+    if(no == NULL){
+        return 0;
+    }
+
+    no->n = n;
+
+    if(fi->inicio == NULL){ 
+        fi->inicio = no;
+        fi->final = no;
+        no->prox = no;
+    }else{
+        no->prox = fi->inicio;
+        fi->inicio = no;
+        fi->final->prox = fi->inicio; //Fazer a fila circular
+    }
+
+    fi->qtd++;
+    return 1;
+
+}
+
+int insere_Fila_Circ(Fila* fi, int n){
+    if(fi == NULL)
+        return 0;
+    Elem* no = (Elem*) malloc(sizeof(Elem));
+    if(no == NULL)
+        return 0;
+    no->n = n;
+    
+    
+    if(fi->final == NULL){//fila vazia
+        fi->inicio = no;
+        fi->final = no;
+        no->prox = no;
+    }else{
+        no->prox = fi->inicio;
+        fi->final->prox = no;
+        fi->final = no;
+    }
+    fi->qtd++;
+       
+return 1;
+}
+
+int remove_Fila_circ(Fila* fi){
+    if(fi == NULL || fi->inicio == NULL)
+        return 0;
+   
+    
+    Elem *no = fi->inicio;
+    
+    if(fi->inicio == fi->final){
+        fi->inicio =NULL;
+        fi->final=NULL;
+        
+    }else{
+        fi->inicio = fi->inicio->prox;
+        fi->final->prox=fi->inicio;
+    }
+    free(no);
+    fi->qtd--;
+    return 1;
+}
+
+void imprime_Fila_circ(Fila* fi) {
+    if(fi == NULL || fi->inicio == NULL)
+        return;
+
+    Elem* no = fi->inicio;
+    do {
+        printf("%d \n", no->n);
+    } while(no != fi->inicio);
+}
+
+
+//Toda a criação do exercicio 5
 FilaAE* cria_FilaAE(){
     FilaAE* fi = (FilaAE*) malloc(sizeof(FilaAE));
     if(fi != NULL){
@@ -423,6 +506,60 @@ void liberaFilaAE(FilaAE* fi){
     }
 }
 
+void mesclarFilas(Fila *F1, Fila *F2, Fila *F3) {
+    if (F1 == NULL || F2 == NULL || F3 == NULL) return; 
+
+    Fila *aux1 = cria_Fila();
+    Fila *aux2 = cria_Fila();
+    int n1, n2;
+
+    // Mesclar enquanto ambas não estão vazias
+    while (!Fila_vazia(F1) && !Fila_vazia(F2)) {
+        consulta_Fila(F1, n1);
+        consulta_Fila(F2, n2);
+        if (n1 <= n2) {
+            insere_Fila(F3, n1);
+            remove_Fila(F1);
+            insere_Fila(aux1, n1);
+        } else {
+            insere_Fila(F3, n2);
+            remove_Fila(F2);
+            insere_Fila(aux2, n2);
+        }
+    }
+
+    // Inserir restos de F1 em F3
+    while (!Fila_vazia(F1)) {
+        consulta_Fila(F1, n1);
+        insere_Fila(F3, n1);
+        remove_Fila(F1);
+        insere_Fila(aux1, n1);
+    }
+    // Inserir restos de F2 em F3
+    while (!Fila_vazia(F2)) {
+        consulta_Fila(F2, n2);
+        insere_Fila(F3, n2);
+        remove_Fila(F2);
+        insere_Fila(aux2, n2);
+    }
+
+    // Restaurar F1 a partir de aux1
+    while (!Fila_vazia(aux1)) {
+        consulta_Fila(aux1, n1);
+        remove_Fila(aux1);
+        insere_Fila(F1, n1);
+    }
+    // Restaurar F2 a partir de aux2
+    while (!Fila_vazia(aux2)) {
+        consulta_Fila(aux2, n2);
+        remove_Fila(aux2);
+        insere_Fila(F2, n2);
+    }
+
+    libera_Fila(aux1);
+    libera_Fila(aux2);
+}
+
 void ex7(Fila *fi){
     if(fi == NULL) return;
     
@@ -440,8 +577,3 @@ void ex7(Fila *fi){
     }
 }
 
-void ex8(Fila* fi, Fila* f2, Fila* f3){
-    if(fi == NULL || f2 == NULL)return;
-
-    
-}
