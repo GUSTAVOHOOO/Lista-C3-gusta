@@ -79,10 +79,14 @@ int Fila_cheia(Fila* fi);
 void imprime_Fila(Fila* fi);
 
 int separa(Fila *f1, Fila *f2, int n); //Exercicio 1
+/*A lógica desse exercicio, é que ele percorre a primeira fila, e quando o N for igual ao N passado, é nesse ponto aonde
+a 2 fila começa passa o final da segunda fila como o final da primeira, e passa o final da primeira fila como o no que está
+sendo visto */
 
 //Dessa função até a liberaFILAPI são todas para construir uma fila de pilhas.
 Pilha* cria_Pilha();
 int insere_Pilha(Pilha* pi, int n);
+int remove_Pilha(Pilha* pi);
 void imprime_Pilha(Pilha* pi);
 void libera_Pilha(Pilha* pi);
 int insere_FilaPI(FilaPI* fi, Pilha *pi);
@@ -100,10 +104,24 @@ PilhaFI* cria_PilhaFI();
 int insere_PilhaFI(PilhaFI* pi, Fila* fi);
 void imprime_PilhaFI(PilhaFI* pi);
 void libera_PilhaFI(PilhaFI* pi);
+/*Todas essas funções são basicamente as ja passadas nos exercicios apenas com os diferencias das filas,
+filas de filas, filas de pilha, pilha de filas.*/
+
 
 //Resolução exercicio 3
 Fila* ex3(Fila* fi);
-int remove_Pilha(Pilha* pi);
+/*Esse exercicio foi feito basicamente é instaciada a pilha, e enquanto a fila nao for nula é feito a remoção de elemento
+e sendo empilhados, e depois é feito o processo inverso, enquanto a pilha nao for nula é feito o desempilhamento e passando
+os elementos para dentro da fila*/
+
+int Furafila(Fila* fi, int n);
+int insere_Fila_Circ(Fila* fi, int n);
+int remove_Fila_circ(Fila* fi);
+void imprime_Fila_circ(Fila* fi);
+/* A fila circular difernetemente da fila tradicional não possui um "fim" por isso usamos a função furar fila 
+para adicionar mai uma estrutura no "meio" da fila circular, pois diferente da fila tradicional não há 
+ponteiros apontando para null , no cado o final aponta para prox que paonta para inicio fazendo a circularidade
+da fila */
 
 //Criação das funções necessárias para a fila no aeroporto
 FilaAE* cria_FilaAE();
@@ -113,7 +131,15 @@ int tamanhoFilaAE(FilaAE* fi);
 void listaAero(FilaAE* fi);
 void primeiroAviao(FilaAE* fi);
 void liberaFilaAE(FilaAE* fi);
+/*Todos essas funções são porque tinha que criar novas para funcionar com o struct de aviao, a lógica é simples, ele mostra
+o primeiro avião e suas caracteristicas, decola um aviao, coloca mais um na fila e lista todos eles.*/
 
 void ex7(Fila* fi);
+/*Aqui é a mesma lógica do exercicio 3 porém sem a pilha auxiliar, no lugar coloquei um vetor, ele desempilha e povoa o vetor
+e quando a fila fica nula ele começa um for de trás pra frente no vetor até o vetor ficar zerado.*/
 
-void ex8(Fila* fi, Fila* f2, Fila* f3);
+void mesclarFilas(Fila *F1, Fila *F2, Fila *F3);
+/* Basicamente usamos as funçoes previamentes disponibilizadas para fazer consultas nas filas que criamos para
+preencher a terceira fila que será criada a partir das anteriores , apos isso usamos um auxiliar para para
+restaura as filas que tiveram suas entidades que foram removidas para criar a terceira fila*/
+
