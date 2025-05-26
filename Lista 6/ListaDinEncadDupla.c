@@ -186,12 +186,12 @@ int remover_mat(Lista* li, int n){
         no = no->prox;
     }
 
-    //Caso não esteja dentro da lista
+    
     if(no == NULL){
         printf("Matricula não encontrada");
         return 0;
     }
-    //Caso seja o primeiro
+    
     if(no == *li){
         *(li) = no->prox;
         free(no);
@@ -199,14 +199,14 @@ int remover_mat(Lista* li, int n){
         return 1;
     } 
     
-    //Caso seja o ultimo
+    
     if(no->prox == NULL){
         no->ant->prox = NULL;
         free(no);
         return 1;
     }
 
-    //Caso for no meio
+    
     no->prox->ant = no->ant;
     no->ant->prox = no->prox;
     free(no);
@@ -232,14 +232,14 @@ int insere_lista_ordenada(Lista* li, struct aluno al){
         while(atual != NULL && atual->dados.matricula < al.matricula){
             atual = atual->prox;
         }
-        if(atual == NULL){ //Caso seja no final
+        if(atual == NULL){ 
             Elem *ultimo = *li;
             while(ultimo->prox != NULL)
                 ultimo = ultimo->prox;
             ultimo->prox = no;
             no->ant = ultimo;
             no->prox = NULL;
-        } else { //Caso seja no meio
+        } else { 
             no->prox = atual;
             no->ant = atual->ant;
             atual->ant->prox = no;
@@ -258,7 +258,7 @@ int conta_lista_nota(Lista* li, float n1) {
         if ((*li)->dados.n1 == n1) {
             contador++;
         }
-        if ((*li)->prox == NULL) break; //Para conseguir ter acesso até a ultima célula sem virar NULL
+        if ((*li)->prox == NULL) break; 
         *li = (*li)->prox;
     }
 
@@ -282,7 +282,7 @@ int insere_lista_circ(Lista* li, struct aluno al){
 
     no->dados = al;
 
-    if(*li == NULL){ // Lista vazia
+    if(*li == NULL){ 
         no->prox = no;
         no->ant = no;
         *li = no;
@@ -292,7 +292,7 @@ int insere_lista_circ(Lista* li, struct aluno al){
         no->ant = ultimo;
         ultimo->prox = no;
         (*li)->ant = no;
-        *li = no; // Se quiser inserir sempre no início
+        *li = no; 
     }
     return 1;
 }
@@ -303,14 +303,12 @@ int remove_lista_circ(Lista* li){
 
     Elem *no = *li;
 
-    // Caso só exista um elemento na lista
     if(no->prox == no){
         free(no);
         *li = NULL;
         return 1;
     }
 
-    // Caso geral: mais de um elemento
     Elem *ultimo = no->ant;
     *li = no->prox;
     ultimo->prox = *li;
@@ -339,50 +337,50 @@ void imprime_lista_circ(Lista* li){
 int inicializa_noDesc(noDesc **no) {
     *no = (noDesc*)malloc(sizeof(noDesc));
     if (!(*no)) {
-        return 0; // Falha na alocação
+        return 0; 
     }
     (*no)->ini = NULL;
     (*no)->fim = NULL;
-    return 1; // Sucesso
+    return 1;
 }
 
 int enfileirar(noDesc *n, int elem) {
-    if (n == NULL) return 0; // Verifica se o nó descritor existe
+    if (n == NULL) return 0; 
 
     Fila *novo = (Fila*)malloc(sizeof(Fila));
-    if (!novo) return 0; // Falha na alocação
+    if (!novo) return 0;
 
     novo->info = elem;
-    novo->prox = NULL; // Novo nó será o último
-    novo->ant = n->fim; // Aponta para o antigo fim
+    novo->prox = NULL; 
+    novo->ant = n->fim; 
 
-    if (n->fim == NULL) { // Fila vazia
+    if (n->fim == NULL) { 
         n->ini = novo;
         n->fim = novo;
-    } else { // Fila não vazia
+    } else { 
         n->fim->prox = novo;
         n->fim = novo;
     }
 
-    return 1; // Sucesso
+    return 1; 
 }
 
 int desenfileirar(noDesc *n, int *elem) {
-    if (n == NULL || n->ini == NULL) return 0; // Fila vazia ou nó inválido
+    if (n == NULL || n->ini == NULL) return 0; 
 
-    Fila *temp = n->ini; // Nó a ser removido
-    *elem = temp->info; // Salva o valor do elemento
+    Fila *temp = n->ini; 
+    *elem = temp->info; 
 
-    if (n->ini == n->fim) { // Só havia um elemento
+    if (n->ini == n->fim) { 
         n->ini = NULL;
         n->fim = NULL;
-    } else { // Mais de um elemento
+    } else { 
         n->ini = n->ini->prox;
         n->ini->ant = NULL;
     }
 
-    free(temp); // Libera o nó removido
-    return 1; // Sucesso
+    free(temp); 
+    return 1; 
 }
 
 void imprimirFila(noDesc *n) {
@@ -391,11 +389,11 @@ void imprimirFila(noDesc *n) {
         return;
     }
 
-    Fila *atual = n->ini; // Ponteiro auxiliar para percorrer a fila
+    Fila *atual = n->ini; 
 
     while (atual != NULL) {
         printf("%d ", atual->info);
-        atual = atual->prox; // Avança para o próximo nó
+        atual = atual->prox; 
     }
 
     printf("\n");
