@@ -10,6 +10,8 @@ struct elemento{
 };
 typedef struct elemento Elem;
 
+
+
 Lista* cria_lista(){
     Lista* li = (Lista*) malloc(sizeof(Lista));
     if(li != NULL)
@@ -230,12 +232,7 @@ int insere_lista_ordenada(Lista* li, struct aluno al){
         while(atual != NULL && atual->dados.matricula < al.matricula){
             atual = atual->prox;
         }
-        if(atual == *li){ //Caso início
-            no->prox = *li;
-            no->ant = NULL;
-            (*li)->ant = no;
-            *li = no;
-        } else if(atual == NULL){ //Caso seja no final
+        if(atual == NULL){ //Caso seja no final
             Elem *ultimo = *li;
             while(ultimo->prox != NULL)
                 ultimo = ultimo->prox;
@@ -266,7 +263,7 @@ int conta_lista_nota(Lista* li, float n1) {
     }
 
     
-    while (*li != NULL && (*li)->ant != NULL) {
+    while ((*li)->ant != NULL) {
         *li = (*li)->ant;
     }
 
@@ -301,18 +298,105 @@ int insere_lista_circ(Lista* li, struct aluno al){
 }
 
 int remove_lista_circ(Lista* li){
-    if(li == NULL)
-        return 0;
-    if((*li) == NULL)//lista vazia
+    if(li == NULL || *li == NULL)
         return 0;
 
     Elem *no = *li;
+
+    // Caso só exista um elemento na lista
+    if(no->prox == no){
+        free(no);
+        *li = NULL;
+        return 1;
+    }
+
+    // Caso geral: mais de um elemento
+    Elem *ultimo = no->ant;
     *li = no->prox;
-    if(no->prox != NULL)
-        no->prox->ant = NULL;
+    ultimo->prox = *li;
+    (*li)->ant = ultimo;
 
     free(no);
     return 1;
 }
 
+void imprime_lista_circ(Lista* li){
+    if(li == NULL || *li == NULL)
+        return;
 
+    Elem* inicio = *li;
+    Elem* no = *li;
+    do {
+        printf("Matricula: %d\n", no->dados.matricula);
+        printf("Nome: %s\n", no->dados.nome);
+        printf("Notas: %.2f %.2f %.2f\n", no->dados.n1, no->dados.n2, no->dados.n3);
+        printf("-------------------------------\n");
+        no = no->prox;
+    } while(no != inicio);
+}
+
+
+int inicializa_noDesc(noDesc **no) {
+    *no = (noDesc*)malloc(sizeof(noDesc));
+    if (!(*no)) {
+        return 0; // Falha na alocação
+    }
+    (*no)->ini = NULL;
+    (*no)->fim = NULL;
+    return 1; // Sucesso
+}
+
+int enfileirar(noDesc *n, int elem) {
+    if (n == NULL) return 0; // Verifica se o nó descritor existe
+
+    Fila *novo = (Fila*)malloc(sizeof(Fila));
+    if (!novo) return 0; // Falha na alocação
+
+    novo->info = elem;
+    novo->prox = NULL; // Novo nó será o último
+    novo->ant = n->fim; // Aponta para o antigo fim
+
+    if (n->fim == NULL) { // Fila vazia
+        n->ini = novo;
+        n->fim = novo;
+    } else { // Fila não vazia
+        n->fim->prox = novo;
+        n->fim = novo;
+    }
+
+    return 1; // Sucesso
+}
+
+int desenfileirar(noDesc *n, int *elem) {
+    if (n == NULL || n->ini == NULL) return 0; // Fila vazia ou nó inválido
+
+    Fila *temp = n->ini; // Nó a ser removido
+    *elem = temp->info; // Salva o valor do elemento
+
+    if (n->ini == n->fim) { // Só havia um elemento
+        n->ini = NULL;
+        n->fim = NULL;
+    } else { // Mais de um elemento
+        n->ini = n->ini->prox;
+        n->ini->ant = NULL;
+    }
+
+    free(temp); // Libera o nó removido
+    return 1; // Sucesso
+}
+
+void imprimirFila(noDesc *n) {
+    if (n == NULL || n->ini == NULL) {
+        printf("Fila vazia!\n");
+        return;
+    }
+
+    Fila *atual = n->ini; // Ponteiro auxiliar para percorrer a fila
+
+    while (atual != NULL) {
+        printf("%d ", atual->info);
+        atual = atual->prox; // Avança para o próximo nó
+    }
+
+    printf("\n");
+}
