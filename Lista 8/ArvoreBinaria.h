@@ -16,6 +16,8 @@ void preOrdem_ArvBin(ArvBin *raiz);
 
 int nos_folhaArv(ArvBin *raiz); // Função para o exercicio 1.
 
+void imprime_arvore(ArvBin *raiz, int nivel); //Função para o exercicio 2
+
 int cons_Arvore(ArvBin *raiz, int valor);//Função para o exercicio 3.
 
 void folhas_decrescente(ArvBin *raiz); //Função para o exercicio 4.
@@ -24,4 +26,4 @@ int arvoresIguais(ArvBin *raiz, ArvBin *raiz2); //Função para o exercicio 5.
 
 void remove_pares(ArvBin *raiz); //Função para o exercicio 6.
 
-int arvoresSimilares(ArvBin *raiz, ArvBin *raiz2);
+int arvoresSimilares(ArvBin *raiz, ArvBin *raiz2); //Função para o exercicio 7

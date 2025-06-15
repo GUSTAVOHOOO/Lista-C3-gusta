@@ -188,6 +188,49 @@ int cons_Arvore(ArvBin *raiz, int valor){
 
     return 0;
 }
+
+/*
+Exercicio 2:
+A função recebe a árvore e um inteiro que indica o nível do nó na hierarquia. Primeiro verifica se a árvore existe 
+e não está vazia. Em seguida, imprime espaços de acordo com o nível para criar a indentação visual. Depois, 
+analisa se o nó é uma folha (sem filhos) ou um pai (com pelo menos um filho) e imprime o valor do nó com essa informação.
+Para cada filho existente (esquerdo ou direito), chama recursivamente a função aumentando o nível de indentação
+e indicando a direção do filho (E para esquerda, D para direita), criando assim uma representação visual
+da estrutura hierárquica da árvore.
+*/
+
+void imprime_arvore(ArvBin *raiz, int nivel) {
+    if(raiz == NULL || *raiz == NULL)
+        return;
+    
+    int i;
+    for(i = 0; i < nivel; i++)
+        printf("   ");
+    
+    // Verifica se é folha (sem filhos)
+    if((*raiz)->esq == NULL && (*raiz)->dir == NULL)
+        printf("%d [FOLHA]\n", (*raiz)->info);
+    else
+        printf("%d [PAI]\n", (*raiz)->info);
+    
+    // Se tiver filho à esquerda
+    if((*raiz)->esq != NULL) {
+        for(i = 0; i < nivel+1; i++)
+            printf("   ");
+        printf("E: ");
+        imprime_arvore(&((*raiz)->esq), nivel+1);
+    }
+    
+    // Se tiver filho à direita
+    if((*raiz)->dir != NULL) {
+        for(i = 0; i < nivel+1; i++)
+            printf("   ");
+        printf("D: ");
+        imprime_arvore(&((*raiz)->dir), nivel+1);
+    }
+}
+
+
 /*
 Exercicio 3:
 Como a árvore binária que estamos trabalhando não tem como inserir mais de um valor igual, essa função verifica se um valor passado como parametro existe dentro 
@@ -209,7 +252,6 @@ Exercicio 4:
 Essa função imprime de forma decrescente os nós folha, ela segue a mesma base das funções para printar de forma recursiva porém com uma mudança,
 ela sempre vai para o mais a direita possível e ai printa apenas os nos onde os ponteiros da esquerda e da direita forem nulos, os nos folhas. 
 */
-
 
 
 int arvoresIguais(ArvBin *raiz, ArvBin *raiz2){    
