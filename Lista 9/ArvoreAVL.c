@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ArvoreAVL.h" //inclui os Prot�tipos
+#include "ArvoreAVL.h" //inclui os Prot�tipos
 
 struct NO{
     int info;
@@ -28,7 +28,7 @@ void libera_NO(struct NO* no){
 void libera_ArvAVL(ArvAVL* raiz){
     if(raiz == NULL)
         return;
-    libera_NO(*raiz);//libera cada n�
+    libera_NO(*raiz);//libera cada n�
     free(raiz);//libera a raiz
 }
 
@@ -142,7 +142,6 @@ void RotacaoLL(ArvAVL *raiz){//LL
     *raiz = B;
 }
 
-
 void RotacaoLR(ArvAVL *raiz){//LR
     RotacaoRR(&(*raiz)->esq);
     RotacaoLL(raiz);
@@ -155,7 +154,7 @@ void RotacaoRL(ArvAVL *raiz){//RL
 
 int insere_ArvAVL(ArvAVL *raiz, int valor){
     int res;
-    if(*raiz == NULL){//�rvore vazia ou n� folha
+    if(*raiz == NULL){//�rvore vazia ou n� folha
         struct NO *novo;
         novo = (struct NO*)malloc(sizeof(struct NO));
         if(novo == NULL)
@@ -213,8 +212,8 @@ struct NO* procuraMenor(struct NO* atual){
 }
 
 int remove_ArvAVL(ArvAVL *raiz, int valor){
-	if(*raiz == NULL){// valor n�o existe
-	    printf("valor n�o existe!!\n");
+	if(*raiz == NULL){// valor n�o existe
+	    printf("valor n�o existe!!\n");
 	    return 0;
 	}
 
@@ -242,14 +241,14 @@ int remove_ArvAVL(ArvAVL *raiz, int valor){
 	}
 
 	if((*raiz)->info == valor){
-	    if(((*raiz)->esq == NULL || (*raiz)->dir == NULL)){// n� tem 1 filho ou nenhum
+	    if(((*raiz)->esq == NULL || (*raiz)->dir == NULL)){// n� tem 1 filho ou nenhum
 			struct NO *oldNode = (*raiz);
 			if((*raiz)->esq != NULL)
                 *raiz = (*raiz)->esq;
             else
                 *raiz = (*raiz)->dir;
 			free(oldNode);
-		}else { // n� tem 2 filhos
+		}else { // n� tem 2 filhos
 			struct NO* temp = procuraMenor((*raiz)->dir);
 			(*raiz)->info = temp->info;
 			remove_ArvAVL(&(*raiz)->dir, (*raiz)->info);
@@ -268,4 +267,45 @@ int remove_ArvAVL(ArvAVL *raiz, int valor){
 	(*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
 
 	return res;
+}
+
+/*-------------------------------------------------------------------------------------------------------------------------------*/
+/*Exercicio 1:
+    A primeira arvore apresentada não é AVL pois o primeiro no a esquerda da arvore não esta corretamente balanceado, já
+    que se tem uma altura total de 2 para sua esquerda e para sua direita não tem nenhum nó, logo -1 (2 - (-1) = 3, fb = 3), 
+    o que ja justifica não ser uma árvore AVL.
+
+    A segunda arvore também não é AVL pelo mesmo motivo o no da esquerda da raiz não está balanceado corretamente pois a altura da sua
+    subarvore a esquerda é 2 e a da direita é -1, mesmo caso da primeira arvore.
+
+    A terceira árvore é um árvore AVL pelo fato dela ser apenas um nó o que significa que está totalmente balanceada já que só
+    tem ele.
+
+    A quarta arvore não está balanceada da forma correta pois o primeiro no a direita está desbalanceado pois tem 2 de altura na sua 
+    subarvore a direita e -1 de altura na sua subarvore a esquerda. Também não é AVL. 
+*/
+
+
+
+
+
+
+
+/*
+Exercicio 4:
+    A construção dessa função se baseia de acordo com a função já criada a rotação LL, apenas alterando os ponteiros onde era direita para a esquerda 
+    e onde era esquerda para direita. Mas o passo a passo é declarar um no, B ser igual ao filho a direita da arvore, o filho a direita ser o filho do B a esquerda
+    e o filho a esquerda de B ser a raiz. Aqui já foi feito todo o processo de rotação, ai é ajustada a altura da raiz e a do B e declara o novo ponteiro de raiz para B
+    Foi feita a troca e ajustes de alturas para o balanceamento correto
+*/
+
+void RotacaoRR(ArvAVL *raiz){//RR
+    printf("RotacaoRR\n");
+    struct NO *B;
+    B = (*raiz)->dir;
+    (*raiz)->dir = B->esq;
+    B->esq = *raiz;
+    (*raiz)->altura = maior(altura_NO((*raiz)->dir),altura_NO((*raiz)->esq)) + 1;
+    B->altura = maior(altura_NO(B->dir),(*raiz)->altura) + 1;
+    *raiz = B;
 }
