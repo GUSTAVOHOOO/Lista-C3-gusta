@@ -22,7 +22,5 @@ struct NO* procuraMenor(struct NO* atual);
 int remove_ArvAVL(ArvAVL *raiz, int valor);
 
 
-
-
-
 void RotacaoRR(ArvAVL *raiz); // Exercicio 4
+int verificaArvoreAVL(ArvAVL *raiz); //Exercicio 7

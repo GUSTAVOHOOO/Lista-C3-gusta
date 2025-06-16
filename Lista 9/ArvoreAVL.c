@@ -285,9 +285,20 @@ int remove_ArvAVL(ArvAVL *raiz, int valor){
     subarvore a direita e -1 de altura na sua subarvore a esquerda. Também não é AVL. 
 */
 
-
-
-
+/*
+Exercicio 3:
+    Um contra argumento valido seria os elementos {1,2,3,4}, se inseridos nessa forma a arvore construida seria  2 
+                                                                                                              /      \
+                                                                                                             1        3
+                                                                                                                        \
+                                                                                                                         4
+    Já se fosse {4,3,2,1} seria:                                                                                 3 
+                                                                                                              /      \
+                                                                                                             2        4
+                                                                                                            /   
+                                                                                                           1
+    Logo sim a ordem em que os conjuntos forem inseridos é importante na construção da árvore
+*/
 
 
 
@@ -298,7 +309,6 @@ Exercicio 4:
     e o filho a esquerda de B ser a raiz. Aqui já foi feito todo o processo de rotação, ai é ajustada a altura da raiz e a do B e declara o novo ponteiro de raiz para B
     Foi feita a troca e ajustes de alturas para o balanceamento correto
 */
-
 void RotacaoRR(ArvAVL *raiz){//RR
     printf("RotacaoRR\n");
     struct NO *B;
@@ -308,4 +318,50 @@ void RotacaoRR(ArvAVL *raiz){//RR
     (*raiz)->altura = maior(altura_NO((*raiz)->dir),altura_NO((*raiz)->esq)) + 1;
     B->altura = maior(altura_NO(B->dir),(*raiz)->altura) + 1;
     *raiz = B;
+}
+
+/*
+Exercicio 5: 
+    Primeiramente a função recebe uma arvore raiz e um valor a ser inserido, a função cria um int auxiliar, faz a verificação se a arvore está vazia, se estiver
+    ele ja aloca e insere o valor e passa o ponteiro da raiz para ele. Se nao for vazia ele cria um nó que aponta para a raiz e entra num if para ver o valor é menor
+    que o valor do nó atual, se for ele chama recursivamente a função para a esquerda, aplica o mesmo para caso não for menor. Se não for nenhum dos casos ele é igual e 
+    é retornado 0. Ele percorre a árvore inteira até achar o lugar correto onde a arvore for nula e insere o valor no lugar correto. E vai voltando recursivamente aonde 
+    foi parado. É nesse momento quando se entra no if de fator de balanceamento for maior ou igual a 2, se for ele faz a rotação necessária para ajustar e tornar o balanceamento
+    correto, e vai voltando as chamadas recurisvas e arrumando as posições para a arvore ficar corretamente balanceada e no final ele sai do if else e é ajustado a altura do atual.
+
+    As funções auxiliares dentro dessa de inserir foram: Fator Balancemaento, Rotação LL/LR, Rotação RR/RL, maior e AlturaNo, vou explicar cada uma delas:
+    Fator Balanceamento: apenas retorna o calculo de (altura subarvore esquerda - altura subarvore direita). 
+    Rotações: As funções de rotações são utilizadas para fazer os ajustes necessários dentro da inserção e não deixar de ser uma arvore AVL.
+    Maior: Ele apenas retorna qual é o maior int dentro de 2 passados.
+    AlturaNo: Apenas retorna a altura da arvore passada.
+
+*/
+
+/*
+Exercicio 6: 
+    Essa função de remoção tem a mesma base recursiva da de inserir mudando poucas coisas, é passado uma raiz e um valor a ser removido, é verificado se a raiz é nula ou não, se for
+    já retorna 0. É declarado um int auxiliar, ai é o mesmo processo que nem da função de inserir, é o caminhamento dentro da arvore para achar o no correto, verificar se o valor é maior 
+    ou menor que o no e é chamado uma função recursiva para algum dos lados. As chamadas recursivas param a partir do momento que o valor do no for igual ao valor passado, ai é entrado em outro
+    if e else, para verificar quantos filhos esse no a ser removido tem, é feito as adaptações para cada caso se tiver 1 filho se tiver os dois ou se for folha. É liberado o nó e ajustado a sua altura, 
+    após isso as chamadas recursivas vão voltando e é feito todo o processo de ajustes para a arvore ficar balanceada.
+
+    As funções auxiliares dentro dessa função de de remover foram: FatorBalanceamento, AlturaNo, Rotações e maior, que já foram todas explicadas no exercicio acima.
+    Apenas o procuraMenor uma função que é passada uma raiz e ele percorre totalmente a esquerda e retorna o no de menor valor encontrado.
+
+*/
+
+/*
+Exercicio 7:
+    Essa função retorna 1 se a raiz passada for uma arvore AVL e retorna 0 caso contrario, de uma forma recursiva simples ela verifica se a arvore é vazia ou nula o caso base onde a recursão para
+    se for algum dos dois a arvore é AVL, se nao for o caso ele declara um int pegando o fator Balanceamento do no atual e verifica se ele é maior que 1 ou menor que -1, se for ele ja retorna 0, e 
+    o passo recursivo por ultimo que é retornar a propria função passado os nos da esquerda e da direita. Após todo o processo de busca acabar ele diz se é ou não AVL.
+*/
+int verificaArvoreAVL(ArvAVL *raiz){
+    if(raiz == NULL || *raiz == NULL)
+        return 1; 
+    
+    int fb = fatorBalanceamento_NO(*raiz);
+    if(fb > 1 || fb < -1) return 0; 
+    
+    return verificaArvoreAVL(&((*raiz)->esq)) && verificaArvoreAVL(&((*raiz)->dir));
 }
