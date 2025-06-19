@@ -285,6 +285,43 @@ int remove_ArvAVL(ArvAVL *raiz, int valor){
     subarvore a direita e -1 de altura na sua subarvore a esquerda. Também não é AVL. 
 */
 
+
+/*
+Exercicio 2:
+
+     Os desenhos das arvores ficaram em uma pasta "Exercicio 2 - Desenho".
+
+     Ordem 1 = {50, 30, 20, 70, 40, 35, 37, 38, 10, 32, 45, 42, 25, 47, 36}.
+     Primeiro é inserido o 50 como raiz, após o 30 fica como filho a esquerda dele e o 20 fica a esquerda do 30, causando um desbalanceamento tendo que ser feita a rotação
+     esquerda simples, trazendo o 30 como raiz, o 70 entra como filho a direita do 50, e o 40 como filho a esquerda do 50, o 35 entra como filho a esquerda do 40 causando um desbalanceamento, 
+     o que eu fiz foi uma rotação a esquerda simples para deixar o 40 como pai do 50 e do 35 e apos isso uma rotação a esquerda dupla para deixar o 35 como raiz. Como o 35 como raiz o seu lado
+     direito ficou desbalanceado, fiz uma rotação a direita simples para deixar o 50 como pai novamente do 40 e do 70. É adicionado o 37 que entra como filho a esquerda do 40 e o 38 que fica como filho
+     a direita do 37 causando um desbalanceamento no nó 40. É resolvido com uma rotação dupla a direita deixando o 38 como pai do 37 e do 40. O 10 é adicionado e deixa desbalanceado, uso uma LL para deixar
+     o 20 como pai do 30 e do 10. O 32 entra como filho a direita do 30 e o 45 como filho a direita do 40. É feita uma LR para corrigir o 45 como pai do 38 e do 50. O resto dos numeros são adicionados de uma
+     forma que não causa desbalanceamento.
+
+    Ordem 2 = {100, 80, 60, 40, 20, 70, 30, 50, 35, 45, 55, 75, 65, 73, 77}.
+    O 100 entra primeiro como raiz, o 80 como filho dele a esquerda e o 60 como filho do 80, tendo que fazer uma LL para equilibrar deixando o 80 como pai de ambos, o 40 entra como filho do 60, e o 20 como 
+    filho do 40, tendo que fazer uma LL para equilibrar. O 70 entra como filho a esquerda do 60, tendo q fazer uma RR e uma LR para deixar ele como a raiz de tudo. O 30 entra como filho a direita do 20 e o 50 
+    como filho a esquerda do 60, o 35 entra como filho a direita do 30 e é necessario fazer um RR para ajustar. O 45 entra como filho a esquerda do 50, fazendo um LL é resolvido e é adicionado o 55, o que é necessário
+    fazer um RL e depois um LR para deixar o 60 como raiz de todos. Depois um RR para ajeitar o lado direito da raiz. É adicionado o 75 como filho do 70 a direita e o 65 como filho do 70 a esquerda. O 73 entra como 
+    filho a esquerda do 75 e é necessario fazer um RL para corrigir deixando o 75 como pai do 80 e do 70. O 77 já vai diretamente para um lugar balanceado.  
+
+    Ordem 3 = {41,38, 31, 12, 19, 8, 27, 49}.
+    Primeiro a raiz é 41, logo depois o 38 é colocado como seu filho a esquerda e o 31 como filho do 38, causando um desbalanceamento ajustado com a rotação direita
+    simples, deixando o 38 como raiz pai do 31 e do 41, o 12 entra como filho do 31, e o 19 como filho a direita do 12, deixando desbanlaceada, para arrumar é so fazer
+    uma rotação direita simples denovo deixando o 19 como pai do 12 e do 31, o 8 entra como filho do 12, ficando desbalanceada de novo. Para arrumar é necessario uma 
+    rotação dupla a direita, deixando o 31 como raiz da arvore, porém após essa rotação o filho a esquerda da raiz (19) fica desbalanceado, ajustando com uma direita simples
+    o 27 entra como filho do 19, ainda balanceada. O 49 entra como filho a direita do 41, e é ajustado com a rotação esquerda simples
+
+    Ordem 4 = {10, 21, 15, 17, 16, 19, 20}.
+    Primeiro é inserido o 10, seu filho a direita é o 21 e o filho a esquerda do 21 é o 15, já está desbalanceado, é preciso fazer uma rotação dupla a esquerda,
+    deixando o 15 como raiz e seu filho a esquerda o 10 e 21 a direita. O 17 entra como filho a esquerda do 21, e o 16 como filho a esquerda, o que desbalancea 
+    tendo que fazer uma rotação direita simples transformando o 17 como pai do 21 e 16. Próximo numero a ser adicionado é o 19, fica como filho a esquerda do 21
+    o que desbalanceia a raiz e é necessário fazer uma rotação dupla a esquerda, o que transformaria a raiz de toda a arvore em 16, porém o 17 ficaria desbalanceado 
+    e tendo que aplicar uma rotação dupla a esquerda também. Essa é a ultima rotação e é so inserir o 20 como filho a esquerda do 21 e fica perfeitamente equilibrado.
+*/
+
 /*
 Exercicio 3:
     Um contra argumento valido seria os elementos {1,2,3,4}, se inseridos nessa forma a arvore construida seria  2 
@@ -361,7 +398,61 @@ int verificaArvoreAVL(ArvAVL *raiz){
         return 1; 
     
     int fb = fatorBalanceamento_NO(*raiz);
-    if(fb > 1 || fb < -1) return 0; 
+    if(fb >= 2) return 0; 
     
     return verificaArvoreAVL(&((*raiz)->esq)) && verificaArvoreAVL(&((*raiz)->dir));
+}
+/*
+Exercicio 8:
+    Essa função recebe uma arvore binaria como parametro e retorna essa mesma arvore balanceada, ela utiliza 2 funções auxiliares, uma para contar os nos da arvore
+    passada como parametro e outra para preencher um array do tamanho da arvore passada. 
+    Primeiramente a função principal verifica se a arvore existe ou se ela é vazia ou se ela já é uma arvore AVL, se for retorna ela mesma. É declarado um inteiro 
+    com o tamanho de nos dentro da arvore e é alocado um vetor de inteiros com a quantidade de nós, esse vetor recebe todos os os valores da arvore de forma ordenada
+    com a função auxiliar, depois é criada uma arvore AVL e um for para ir preenchendo a arvore com a função de inserir na arvore avl, depois é liberada a arvore passada
+    como parametro e retornada a arvore AVL criada.
+*/
+
+int conta_nos(struct NO* no) {
+    if(no == NULL)
+        return 0;
+    return 1 + conta_nos(no->esq) + conta_nos(no->dir);
+}
+
+void preenche_array(struct NO* no, int *elementos, int *indice) {
+    if(no == NULL)
+        return;
+    preenche_array(no->esq, elementos, indice);
+    elementos[(*indice)++] = no->info;
+    preenche_array(no->dir, elementos, indice);
+}
+    
+
+ArvAVL *transformaArvore(ArvAVL* raiz){
+    if(raiz == NULL || *raiz == NULL || verificaArvoreAVL(raiz))
+        return raiz; 
+
+    int quantidade = conta_nos(*raiz);
+
+    int *elementos = (int*)malloc(quantidade * sizeof(int));
+    if(elementos == NULL)
+        return raiz;
+
+    int indice = 0;
+    preenche_array(*raiz, elementos, &indice);
+
+    ArvAVL* nova_arvore = cria_ArvAVL();
+    if(nova_arvore == NULL) {
+        free(elementos);
+        return raiz; 
+    }
+    
+    for(int i = 0; i < quantidade; i++) {
+        insere_ArvAVL(nova_arvore, elementos[i]);
+    }
+    
+    
+    free(elementos);
+    libera_ArvAVL(raiz);
+    
+    return nova_arvore;
 }

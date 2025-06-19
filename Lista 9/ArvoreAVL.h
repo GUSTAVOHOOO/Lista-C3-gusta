@@ -24,3 +24,7 @@ int remove_ArvAVL(ArvAVL *raiz, int valor);
 
 void RotacaoRR(ArvAVL *raiz); // Exercicio 4
 int verificaArvoreAVL(ArvAVL *raiz); //Exercicio 7
+
+int conta_nos(struct NO* no); //Função aux para o ex 8
+void preenche_array(struct NO* no, int *elementos, int *indice); //Função aux para o ex 8
+ArvAVL* transformaArvore(ArvAVL* raiz); //Exercicio 8
