@@ -22,6 +22,14 @@ int main(){
     
     int* pai = prim(gr, 0);
     imprime_MST(gr, pai);
+
+
+    grafoSimplesConexo();
+    grafoSimplesConexo2();
+    grafoSimplesDirecionado();
+    grafoSimplesNaoDirecionado();
+
+
     
     free(pai);
     libera_Grafo(gr);
